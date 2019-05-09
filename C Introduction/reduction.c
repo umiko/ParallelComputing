@@ -2,13 +2,12 @@
 #include <stdio.h>
 
 double f(int i){
-    return rand()/(i+1);
+    return (double)rand()/RAND_MAX*(i+1);
 }
 
 int main(){
-    int h;
-    double res;
-    #pragma omp parallel shared(h,res)
+    double res=0;
+    #pragma omp parallel shared(res)
     {
         #pragma omp for reduction (+:res)
         for(int i=0; i<30; i++){
