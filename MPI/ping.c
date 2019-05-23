@@ -9,10 +9,11 @@ int main(int argc, char** argv){
     
     int rank;
     int size;
-    int loops = 5;
+    int loops = 50;
 
     float f;
     double timer = 0.0;
+    timer = MPI_Wtime();
 
     MPI_Status status;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
