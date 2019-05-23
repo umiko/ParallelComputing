@@ -17,6 +17,8 @@ int main(int argc, char** argv){
     MPI_Status status;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
+    
+    double timerAll = MPI_Wtime();
 
     for (int i = 0; i < loops; i++)
     {
@@ -35,7 +37,7 @@ int main(int argc, char** argv){
             MPI_Recv(&f, 1, MPI_FLOAT, 0, 23, MPI_COMM_WORLD, &status);
         }
     }
-
+    printf("AVERAGE LATENCY: %f\n", (MPI_Wtime()-timerAll)/(2*loops)*1e9);
     MPI_Finalize();
     return 0;
 }
