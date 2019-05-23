@@ -37,7 +37,7 @@ int main(int argc, char** argv){
             MPI_Recv(&f, 1, MPI_FLOAT, 0, 23, MPI_COMM_WORLD, &status);
         }
     }
-    printf("AVERAGE LATENCY: %f\n", (MPI_Wtime()-timerAll)/(2*loops)*1e9);
+    printf("Rank %d says: AVERAGE LATENCY: %f\n", rank, (MPI_Wtime()-timerAll)/(2*loops)*1e9);
     MPI_Finalize();
     return 0;
 }
