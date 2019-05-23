@@ -12,6 +12,7 @@ int main(int argc, char** argv){
     int loops = 5;
 
     float f;
+    double timer = 0.0;
 
     MPI_Status status;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -22,16 +23,16 @@ int main(int argc, char** argv){
         if (0 == rank % 2)
         {
             MPI_Recv(&f, 1, MPI_FLOAT, 1, 17, MPI_COMM_WORLD, &status);
-            printf("Rank %d says: %s\n", rank, "PONG");
+            printf("Rank %d says: %s\tRTT=%f\n", rank, "PONG", MPI_Wtime() - timer);
+            timer = MPI_Wtime();
             MPI_Send(&f, 1, MPI_FLOAT, 1, 23, MPI_COMM_WORLD);
-            printf("Rank %d says: %s\n", rank, "PING");
         }
         else
         {
             MPI_Send(&f, 1, MPI_FLOAT, 0, 17, MPI_COMM_WORLD);
-            printf("Rank %d says: %s\n", rank, "PING");
+            printf("Rank %d says: %s\tRTT=%f\n", rank, "PING", MPI_Wtime() - timer);
+            timer = MPI_Wtime();
             MPI_Recv(&f, 1, MPI_FLOAT, 0, 23, MPI_COMM_WORLD, &status);
-            printf("Rank %d says: %s\n", rank, "PONG");
         }
     }
 
