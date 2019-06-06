@@ -27,6 +27,7 @@ int main(int argc, char** argv){
     for (int i = 0; i < loops-1; i++)
     {
         MPI_Irecv(&recv, 1, MPI_INT,rank==0 ? size-1 : rank-1, 256, MPI_COMM_WORLD, &recvreq);
+        MPI_Wait(&recvreq, &status);
         my_size+=recv;
         MPI_Isend(&recv, 1, MPI_INT, rank==size-1 ? 0 : rank+1, 256, MPI_COMM_WORLD, &sendreq);
     }
