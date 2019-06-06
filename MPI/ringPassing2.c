@@ -25,7 +25,7 @@ int main(int argc, char** argv){
 
     double timerAll = MPI_Wtime();
     MPI_Comm subcom;
-    MPI_Comm_split(MPI_COMM_WORLD, rank%3 == 0 ? 0 : 1, 0, &subcom);
+    MPI_Comm_split(MPI_COMM_WORLD, rank/(size/3) == 0 ? 0 : 1, 0, &subcom);
 
     int subrank = 0;
     int subsize = 0;
