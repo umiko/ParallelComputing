@@ -31,7 +31,7 @@ int main(int argc, char** argv){
     MPI_Comm_rank(subcom, &subrank);
     MPI_Comm_size(subcom, &subsize);
 
-    int my_size = rank/subrank==0?1:subrank;
+    int my_size = rank/(subrank==0?1:subrank);
 
     MPI_Isend(&my_size, 1, MPI_INT, subrank == subsize - 1 ? 0 : subrank + 1, 256, subcom, &sendreq);
     for (int i = 0; i < subsize-1; i++)
