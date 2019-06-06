@@ -27,13 +27,18 @@ int main(int argc, char** argv){
     MPI_Comm subcom;
     MPI_Comm_split(MPI_COMM_WORLD, rank%3 == 0 ? 0 : 1, 0, &subcom);
 
-    MPI_Isend(&my_size, 1, MPI_INT, rank == size - 1 ? 0 : rank + 1, 256, subcom, &sendreq);
+    int subrank = 0;
+    int subsize = 0;
+    MPI_Comm_rank(subcom, &subrank);
+    MPI_Comm_size(subcom, &subsize);
+
+    MPI_Isend(&my_size, 1, MPI_INT, subrank == subsize - 1 ? 0 : subrank + 1, 256, subcom, &sendreq);
     for (int i = 0; i < loops-1; i++)
     {
-        MPI_Irecv(&recv, 1, MPI_INT, rank == 0 ? size - 1 : rank - 1, 256, subcom, &recvreq);
+        MPI_Irecv(&recv, 1, MPI_INT, subrank == 0 ? subsize - 1 : subrank - 1, 256, subcom, &recvreq);
         MPI_Wait(&recvreq, &status);
         my_size+=recv;
-        MPI_Isend(&recv, 1, MPI_INT, rank == size - 1 ? 0 : rank + 1, 256, subcom, &sendreq);
+        MPI_Isend(&recv, 1, MPI_INT, subrank == subsize - 1 ? 0 : subrank + 1, 256, subcom, &sendreq);
     }
     printf("Rank Sum: %d\n", my_size);
 
