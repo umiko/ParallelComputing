@@ -11,7 +11,6 @@ int main(int argc, char** argv){
     int size;
     int loops = 10;
 
-    int my_size = rank;
     int recv=0;
     double timer = MPI_Wtime();
 
@@ -21,6 +20,9 @@ int main(int argc, char** argv){
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     
+    int my_size = rank;
+
+
     double timerAll = MPI_Wtime();
 
     MPI_Isend(&my_size, 1, MPI_INT, rank == size - 1 ? 0 : rank + 1, 256, MPI_COMM_WORLD, &sendreq);
@@ -31,7 +33,7 @@ int main(int argc, char** argv){
         my_size+=recv;
         MPI_Isend(&recv, 1, MPI_INT, rank==size-1 ? 0 : rank+1, 256, MPI_COMM_WORLD, &sendreq);
     }
-    printf("Rank Sum: %i", my_size);
+    printf("Rank Sum: %d\n", my_size);
 
     MPI_Finalize();
     return 0;
