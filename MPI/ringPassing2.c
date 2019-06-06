@@ -33,7 +33,7 @@ int main(int argc, char** argv){
     MPI_Comm_size(subcom, &subsize);
 
     MPI_Isend(&my_size, 1, MPI_INT, subrank == subsize - 1 ? 0 : subrank + 1, 256, subcom, &sendreq);
-    for (int i = 0; i < loops-1; i++)
+    for (int i = 0; i < subsize-1; i++)
     {
         MPI_Irecv(&recv, 1, MPI_INT, subrank == 0 ? subsize - 1 : subrank - 1, 256, subcom, &recvreq);
         MPI_Wait(&recvreq, &status);
