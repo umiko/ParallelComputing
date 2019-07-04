@@ -1,0 +1,8 @@
+[package]
+name = "rust"
+version = "0.1.0"
+authors = ["umiko <robertscholl.private@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+rayon = "1.1.0"
